@@ -1,0 +1,7 @@
+{
+	"info": {
+		"ready": "Serveur socket prêt à accepter les connexions.",
+		"connected": "Socket connecté : {id} (locale={locale}, token={token})",
+		"disconnected": "Socket déconnecté : {id} (raison : {reason})"
+	}
+}
