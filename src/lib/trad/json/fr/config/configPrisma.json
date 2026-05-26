@@ -1,0 +1,9 @@
+{
+	"info": {
+		"connected": "Connexion Prisma établie avec la base PostgreSQL."
+	},
+	"errors": {
+		"missingDatabaseUrl": "La variable d'environnement DATABASE_URL n'est pas définie.",
+		"connectionFailed": "Impossible d'établir la connexion Prisma à la base de données."
+	}
+}

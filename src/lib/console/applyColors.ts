@@ -6,7 +6,7 @@ const originalError = console.error.bind(console);
 console.info = (...args: unknown[]): void => {
 	originalInfo(
 		...args.map((arg) =>
-			typeof arg === "string" ? styleText("green", arg) : arg,
+			typeof arg === "string" ? styleText("blue", arg) : arg,
 		),
 	);
 };

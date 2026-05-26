@@ -3,7 +3,7 @@ import { EnumLocale } from "../enum/enumLocale.js";
 import { translations } from "../translations.js";
 import type { TypeArgs } from "../types/typeArgs.js";
 
-export function useTranslation(
+export function trad(
 	key: string,
 	file: string,
 	args?: TypeArgs,

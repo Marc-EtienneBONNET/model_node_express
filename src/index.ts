@@ -1,11 +1,15 @@
 import "./lib/console/applyColors.js";
 import { createApp } from "./configExpress.js";
+import { connectPrisma } from "./configPrisma.js";
 import { createSocketServer } from "./configSocket.js";
 import { ClassCustomError } from "./lib/customError/classCustomError.js";
-import { useTranslation } from "./lib/trad/hook/useTranslation.js";
+import { trad } from "./lib/trad/hook/trad.js";
 
-try {
+async function main(): Promise<void> {
 	const port = Number(process.env.API_PORT) || 3000;
+
+	await connectPrisma();
+
 	const app = createApp();
 
 	const server = app.listen(port, () => {
@@ -14,7 +18,7 @@ try {
 			typeof address === "string"
 				? address
 				: `http://localhost:${address?.port ?? port}`;
-		useTranslation("info.listening", "config/configExpress", {
+		trad("info.listening", "config/configExpress", {
 			url,
 		})?.console.info();
 	});
@@ -51,6 +55,9 @@ try {
 				process.exit(1);
 		}
 	});
-} catch (err) {
-	new ClassCustomError(undefined, undefined, undefined, err as Error).console();
 }
+
+main().catch((err) => {
+	new ClassCustomError(undefined, undefined, undefined, err as Error).console();
+	process.exit(1);
+});

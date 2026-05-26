@@ -1,4 +1,4 @@
-import { useTranslation } from "../trad/hook/useTranslation.js";
+import { trad } from "../trad/hook/trad.js";
 import type { TypeArgs } from "../trad/types/typeArgs.js";
 
 const MACHINE_FILE = "errorMachine/classCustomError";
@@ -38,7 +38,7 @@ export class ClassCustomError extends Error {
 		}
 
 		const message =
-			key && file ? (useTranslation(key, file, args)?.value ?? key) : undefined;
+			key && file ? (trad(key, file, args)?.value ?? key) : undefined;
 		super(message, { cause: errorOrigine });
 		this.name = "ClassCustomError";
 		this.statusCode = statusCode ?? 500;
@@ -50,7 +50,7 @@ export class ClassCustomError extends Error {
 
 	console(): this {
 		if (this.key && this.file) {
-			useTranslation(this.key, this.file, this.args)?.console.error();
+			trad(this.key, this.file, this.args)?.console.error();
 		}
 		console.error(`  statusCode: ${this.statusCode}`);
 		if (this.cause instanceof Error) {

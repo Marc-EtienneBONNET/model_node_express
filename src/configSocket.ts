@@ -2,7 +2,7 @@ import type { Server as HttpServer } from "node:http";
 import { Server } from "socket.io";
 import { registerSocket } from "./api/socket/index.js";
 import { EnumLocale } from "./lib/trad/enum/enumLocale.js";
-import { useTranslation } from "./lib/trad/hook/useTranslation.js";
+import { trad } from "./lib/trad/hook/trad.js";
 import type {
 	TypeClientToServerEvents,
 	TypeInterServerEvents,
@@ -56,9 +56,9 @@ export function createSocketServer(httpServer: HttpServer): TypeIo {
 		next();
 	});
 
-	useTranslation("info.ready", "config/configSocket")?.console.info();
+	trad("info.ready", "config/configSocket")?.console.info();
 	io.on("connection", (socket) => {
-		useTranslation("info.connected", "config/configSocket", {
+		trad("info.connected", "config/configSocket", {
 			id: socket.id,
 			locale: socket.data.config.locale ?? "?",
 			token: socket.data.config.tokenConnection ? "oui" : "non",
@@ -67,7 +67,7 @@ export function createSocketServer(httpServer: HttpServer): TypeIo {
 		registerSocket(socket);
 
 		socket.on("disconnect", (reason) => {
-			useTranslation("info.disconnected", "config/configSocket", {
+			trad("info.disconnected", "config/configSocket", {
 				id: socket.id,
 				reason,
 			})?.console.info();
