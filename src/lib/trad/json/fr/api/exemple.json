@@ -1,0 +1,7 @@
+{
+	"errors": {
+		"notFound": "Aucun exemple trouvé avec l'id '{id}'.",
+		"nameRequired": "Le champ 'name' est requis et doit être une chaîne non vide.",
+		"invalidName": "Le champ 'name' doit être une chaîne."
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"info": {
+		"listening": "Serveur démarré sur {url}"
+	},
+	"errors": {
+		"portAlreadyInUse": "Le port {port} est déjà utilisé, choisis-en un autre.",
+		"portPermissionDenied": "Permission refusée pour le port {port} (les ports < 1024 nécessitent les droits root).",
+		"unknownSystemError": "Erreur système inconnue."
+	}
+}

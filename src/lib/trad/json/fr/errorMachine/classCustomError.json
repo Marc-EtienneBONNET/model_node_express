@@ -1,0 +1,6 @@
+{
+	"keyRequiresFile": "ClassCustomError : 'key' fourni sans 'file'.",
+	"fileRequiresKey": "ClassCustomError : 'file' fourni sans 'key'.",
+	"argsOrStatusRequiresKeyAndFile": "ClassCustomError : 'args' / 'statusCode' nécessitent 'key' et 'file'.",
+	"nothingProvided": "ClassCustomError : aucun argument fourni — 'errorOrigine' ou 'key' + 'file' est requis."
+}

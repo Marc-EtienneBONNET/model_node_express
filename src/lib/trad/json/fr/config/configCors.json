@@ -1,0 +1,7 @@
+{
+	"errors": {
+		"originNotAllowed": "Origine '{origin}' non autorisée par CORS.",
+		"emptyOrigins": "CORS_ALLOWED_ORIGINS est défini mais vide après parsing.",
+		"invalidOriginFormat": "CORS_ALLOWED_ORIGINS contient des entrées invalides : {origins}"
+	}
+}

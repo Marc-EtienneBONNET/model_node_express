@@ -1,0 +1,9 @@
+{
+	"internalServerError": "Internal server error",
+	"badRequest": "Bad request",
+	"notFound": "Resource not found",
+	"validation": {
+		"required": "Field '{field}' is required",
+		"invalid": "Field '{field}' is invalid"
+	}
+}

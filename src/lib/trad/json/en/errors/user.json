@@ -1,0 +1,6 @@
+{
+	"notFound": "User not found",
+	"alreadyExists": "A user with this email already exists",
+	"emailInvalid": "Invalid email",
+	"passwordTooShort": "Password must be at least {min} characters long"
+}
