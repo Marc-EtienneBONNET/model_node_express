@@ -1,0 +1,6 @@
+{
+	"errors": {
+		"uncaughtException": "Exception non capturée détectée — arrêt du process.",
+		"unhandledRejection": "Promesse rejetée non gérée détectée — arrêt du process."
+	}
+}

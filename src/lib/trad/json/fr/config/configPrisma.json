@@ -4,6 +4,7 @@
 	},
 	"errors": {
 		"missingDatabaseUrl": "La variable d'environnement DATABASE_URL n'est pas définie.",
-		"connectionFailed": "Impossible d'établir la connexion Prisma à la base de données."
+		"connectionFailed": "Impossible d'établir la connexion Prisma à la base de données.",
+		"clientNotGenerated": "Le client Prisma n'a pas été généré. Lance `npx prisma generate` (ou `npm run prisma:generate`) pour créer `node_modules/.prisma/client`."
 	}
 }

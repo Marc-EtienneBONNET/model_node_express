@@ -4,6 +4,7 @@ import configFrExpress from "./json/fr/config/configExpress.json";
 import configFrPrisma from "./json/fr/config/configPrisma.json";
 import configFrSocket from "./json/fr/config/configSocket.json";
 import classCustomErrorFr from "./json/fr/errorMachine/classCustomError.json";
+import processHandlersFr from "./json/fr/lib/processHandlers.json";
 
 export const translations = {
 	fr: {
@@ -12,6 +13,7 @@ export const translations = {
 		"config/configPrisma": configFrPrisma,
 		"config/configSocket": configFrSocket,
 		"errorMachine/classCustomError": classCustomErrorFr,
+		"lib/processHandlers": processHandlersFr,
 		"api/exemple": exempleApiFr,
 	},
 	en: {},

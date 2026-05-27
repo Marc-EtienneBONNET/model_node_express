@@ -1,6 +1,7 @@
 {
 	"info": {
-		"listening": "Serveur démarré sur {url}"
+		"listening": "Serveur démarré sur {url}",
+		"shutdown": "Signal {signal} reçu — arrêt propre du serveur."
 	},
 	"errors": {
 		"portAlreadyInUse": "Le port {port} est déjà utilisé, choisis-en un autre.",

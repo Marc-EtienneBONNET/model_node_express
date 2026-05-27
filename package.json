@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "prisma db push && nodemon",
+    "dev": "prisma generate && prisma db push && nodemon",
     "build": "tsc",
-    "start": "prisma db push && node --env-file=.env dist/index.js",
+    "start": "prisma generate && prisma db push && node --env-file=.env dist/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "npx biome check --write",
     "lint:fix": "npx biome format --write",

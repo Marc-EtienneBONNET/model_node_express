@@ -1,6 +1,7 @@
+import "./lib/processHandlers/processHandlers.js";
 import "./lib/console/applyColors.js";
 import { createApp } from "./configExpress.js";
-import { connectPrisma } from "./configPrisma.js";
+import { connectPrisma, prisma } from "./configPrisma.js";
 import { createSocketServer } from "./configSocket.js";
 import { ClassCustomError } from "./lib/customError/classCustomError.js";
 import { trad } from "./lib/trad/hook/trad.js";
@@ -24,6 +25,24 @@ async function main(): Promise<void> {
 	});
 
 	createSocketServer(server);
+
+	const shutdown = async (signal: NodeJS.Signals): Promise<void> => {
+		trad("info.shutdown", "config/configExpress", { signal })?.console.info();
+		server.close();
+		try {
+			await prisma.$disconnect();
+		} catch (err) {
+			new ClassCustomError(
+				undefined,
+				undefined,
+				undefined,
+				err as Error,
+			).console();
+		}
+		process.exit(0);
+	};
+	process.once("SIGINT", shutdown);
+	process.once("SIGTERM", shutdown);
 
 	server.on("error", (err: NodeJS.ErrnoException) => {
 		switch (err.code) {

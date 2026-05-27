@@ -55,12 +55,14 @@ tsconfig.json, biome.jsonc, package.json
 ```
 
 ## bootstrap (src/index.ts — strict order)
-1. `applyColors()` — patch console.info(blue)/console.error(red); MUST be first
-2. `await connectPrisma()` — open pg connection; throw if DATABASE_URL absent
-3. `const app = createApp()` — Express + middlewares + router (cf. pipeline)
-4. `const httpServer = app.listen(API_PORT)` — start HTTP
-5. `createSocketServer(httpServer)` — attach Socket.io to same server
-6. listen error handlers: EADDRINUSE/EACCES → throw ClassCustomError
+1. `import "./lib/processHandlers/processHandlers.js"` — side-effect install of `uncaughtException` / `unhandledRejection` handlers; MUST be the FIRST import so it intercepts module-loading errors (e.g. `@prisma/client` not generated)
+2. `applyColors()` — patch console.info(blue)/console.error(red)
+3. `await connectPrisma()` — open pg connection; throw if DATABASE_URL absent
+4. `const app = createApp()` — Express + middlewares + router (cf. pipeline)
+5. `const httpServer = app.listen(API_PORT)` — start HTTP
+6. `createSocketServer(httpServer)` — attach Socket.io to same server
+7. shutdown handlers: SIGINT/SIGTERM → close server + `prisma.$disconnect()` → exit 0
+8. listen error handlers: EADDRINUSE/EACCES → throw ClassCustomError
 
 ## express pipeline (src/configExpress.ts — strict order)
 ```

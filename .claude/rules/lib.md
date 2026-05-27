@@ -10,6 +10,7 @@
 ## structure
 ```
 lib/
+  processHandlers/processHandlers.ts       # side-effect: install uncaughtException/unhandledRejection handlers
   console/applyColors.ts                   # side-effect: patch console.info/error colors
   customError/classCustomError.ts          # ClassCustomError extends Error
   trad/
@@ -21,15 +22,25 @@ lib/
     json/
       fr/
         config/{configExpress,configCors,configPrisma,configSocket}.json
+        lib/processHandlers.json
         api/exemple.json
         errorMachine/classCustomError.json
       en/                                  # stub
 ```
 
+## processHandlers/processHandlers.ts
+- exports: nothing (side-effect only — installs handlers at top-level on import)
+- patches: `process.on("uncaughtException")` + `process.on("unhandledRejection")`
+- behaviour: wraps the raw error into `new ClassCustomError(...).console()` then `process.exit(1)`
+- special case: `MODULE_NOT_FOUND` with message matching `\.prisma[\\/]client` → reports `"errors.clientNotGenerated"` in `config/configPrisma` (suggests `npx prisma generate`)
+- fallback keys: `errors.uncaughtException` / `errors.unhandledRejection` (namespace `lib/processHandlers`)
+- MUST be imported in `src/index.ts` as the FIRST import — only this guarantees the handlers are active before module-loading errors are thrown (e.g. import of an ungenerated `@prisma/client`)
+- defensive: the `reportFatal` function wraps the report itself in try/catch and falls back to raw `console.error` if `ClassCustomError` / `trad` chain misbehaves — this is the bottom safety net, it MUST NOT throw
+
 ## console/applyColors.ts
 - exports: nothing (side-effect only)
 - patches: `console.info` (blue via `util.styleText("blue", …)`), `console.error` (red)
-- MUST be imported in `src/index.ts` BEFORE any console.info/error usage
+- MUST be imported in `src/index.ts` BEFORE any console.info/error usage (and AFTER processHandlers, so its own colored output benefits)
 
 ## customError/classCustomError.ts
 ```ts
@@ -98,7 +109,7 @@ function trad(
 fr, en, es, de, it, pt, nl, pl, ru, ja, zh, ko, ar, tr, sv, da, no, fi, cs, el, he, hi, th, vi, id, uk, ro, hu
 
 ### TypeNamespace (auto-derived)
-`type TypeNamespace = keyof (typeof translations)["fr"]` — current values: `"config/configExpress" | "config/configCors" | "config/configPrisma" | "config/configSocket" | "api/exemple" | "errorMachine/classCustomError"`
+`type TypeNamespace = keyof (typeof translations)["fr"]` — current values: `"config/configExpress" | "config/configCors" | "config/configPrisma" | "config/configSocket" | "errorMachine/classCustomError" | "lib/processHandlers" | "api/exemple"`
 
 ### adding a locale
 1. mkdir `src/lib/trad/json/<locale>/{config,api,errorMachine}/`
@@ -117,7 +128,8 @@ fr, en, es, de, it, pt, nl, pl, ru, ja, zh, ko, ar, tr, sv, da, no, fi, cs, el, 
 - NEVER import from api/, externalApi/, configXxx.ts
 
 ## invariants
-- applyColors() FIRST line of src/index.ts
+- processHandlers FIRST import of src/index.ts (before applyColors and before any other import that could throw at module load)
+- applyColors() right after processHandlers — patches console BEFORE any other code logs
 - ClassCustomError no double-wrap
 - trad() returns undefined on missing key (silent) — caller chains with `?.`
 - JSON imports REQUIRE `with { type: "json" }` (ESM runtime requirement)
@@ -130,6 +142,7 @@ fr, en, es, de, it, pt, nl, pl, ru, ja, zh, ko, ar, tr, sv, da, no, fi, cs, el, 
 - env var spelling: `DEFAULT_LANGAGE` (NOT LANGUAGE) — do not "fix" without coordinated rename
 
 ## public api (refacto-stable)
+- processHandlers (side-effect)
 - applyColors (side-effect)
 - ClassCustomError (class)
 - trad, ClassTranslation, EnumLocale, TypeArgs, TypeLocale, TypeNamespace, translations
